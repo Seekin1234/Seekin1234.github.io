@@ -26,19 +26,39 @@
       background-color: #75caff; 
       font-family: 'Caveat', cursive;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto; /* ให้เลื่อนลงได้ถ้าซูมเยอะจนล้นจอ */
+      overflow-x: hidden;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      /* ใช้หน่วย vh เพื่อให้ระยะห่างยืดหยุ่นตามความสูงหน้าจอ */
+      gap: 3vh; 
+      padding: 20px;
+      min-height: min-content;
     }
 
     .image-box {
       position: relative;
-      width: 320px;
-      height: 320px;
+      /* ปรับขนาดให้สัมพันธ์กับหน้าจอ (เช่น 40% ของความสูงหน้าจอ) */
+      width: 60vh; 
+      height: 60vh;
+      /* กำหนดขนาดขั้นต่ำและขั้นสูงไว้ไม่ให้เพี้ยนเกินไป */
+      max-width: 90vw;
+      max-height: 90vw;
+      min-width: 280px;
+      min-height: 280px;
+
       cursor: pointer;
       overflow: hidden;
       border-radius: 30px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
       border: 5px solid white;
       transition: transform 0.3s ease;
+      flex-shrink: 0; /* ป้องกันรูปโดนบีบ */
     }
     
     .image-box:hover {
@@ -64,11 +84,11 @@
       transform: translate(-50%, -50%);
       color: white;
       background: rgba(0,0,0,0.4);
-      padding: 12px 25px;
-      border-radius: 30px;
+      padding: 1.5vh 3vh;
+      border-radius: 50px;
       pointer-events: none;
       transition: opacity 0.5s ease;
-      font-size: 24px;
+      font-size: 4vh; /* ขนาดอักษรขยับตามจอ */
       white-space: nowrap;
       border: 1px solid rgba(255,255,255,0.3);
     }
@@ -78,12 +98,12 @@
     }
 
     #mystery-button {
-      position: absolute;
-      bottom: 40px; 
-      left: 50%;
-      transform: translateX(-50%) scale(0);
-      padding: 10px 30px;
-      font-size: 22px;
+      transform: scale(0);
+      /* ใช้ em หรือ vh เพื่อให้ขนาดปุ่มสัมพันธ์กับขนาดตัวอักษรและหน้าจอ */
+      padding: 1.5vh 6vh;
+      font-size: 3.5vh;
+      min-font-size: 18px;
+
       font-family: 'Caveat', cursive;
       font-weight: bold;
       color: white; 
@@ -91,21 +111,22 @@
       backdrop-filter: blur(15px); 
       -webkit-backdrop-filter: blur(15px); 
       border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 50px;
+      border-radius: 100px;
       cursor: pointer;
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       opacity: 0;
       z-index: 10;
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      flex-shrink: 0;
     }
 
     #mystery-button.show {
-      transform: translateX(-50%) scale(1);
+      transform: scale(1);
       opacity: 1;
     }
 
     #mystery-button:hover {
-      transform: translateX(-50%) scale(1.1);
+      transform: scale(1.1);
       background: #4CAF50;
       border-color: transparent;
       box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
@@ -114,23 +135,21 @@
 </head>
 <body>
 
-  <div class="image-box" onclick="revealImage(this)">
-    <img src="picop.png" alt="Secret Image">
-    <div class="instruction">open</div>
+  <div class="content-wrapper">
+    <div class="image-box" onclick="revealImage(this)">
+      <img src="picop.png" alt="Secret Image">
+      <div class="instruction">open</div>
+    </div>
+
+    <button id="mystery-button" onclick="mysteryAction()">???</button>
   </div>
 
-  <button id="mystery-button" onclick="mysteryAction()">???</button>
-
   <script>
-    
     const openSfx = new Audio('paperr.mp3');
-    
- 
     const btnSfx = new Audio('pop.mp3');
 
     function revealImage(element) {
       if (!element.classList.contains("reveal")) {
-       
         openSfx.currentTime = 0;
         openSfx.play();
       }
@@ -143,7 +162,6 @@
     }, 3000);
 
     function mysteryAction() {
-   
       btnSfx.currentTime = 0;
       btnSfx.play();
       
