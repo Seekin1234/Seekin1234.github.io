@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #75caff;
+            cursor: pointer;
+            user-select: none;
+            overflow: hidden;
+            font-family: 'Arial Black', sans-serif;
+            flex-direction: column; 
+        }
+
+        #display-text {
+            color: white;
+            font-size: clamp(26px, 6vw, 30px);
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            line-height: 1.3;
+        }
+
+        .button-group {
+            display: none; 
+            gap: 20px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-yes { background-color: #4CAF50; }
+        .btn-no { background-color: #f44336; }
+
+        .bounce-animation {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+    
+</head>
+<body id="main-body" onclick="changeMessage()">
+
+    <div id="display-text" class="bounce-animation">HI!</div>
+
+    <div id="button-container" class="button-group">
+        <button id="yes-btn" class="btn btn-yes" onclick="handleYes(event)">YES</button>
+        <button id="no-btn" class="btn btn-no" onclick="handleNo(event)">NO</button>
+    </div>
+
+    <script>
+        const messages = [
+            "If you see this",
+            "I've got something to tell you",
+            "Curious to know ?"
+        ];
+
+        let currentIndex = 0;
+        let isFinished = false;
+        let noClickCount = 0;
+
+        const textElement = document.getElementById('display-text');
+        const buttonContainer = document.getElementById('button-container');
+        const bodyElement = document.getElementById('main-body');
+        const noBtn = document.getElementById('no-btn');
+
+        function changeMessage() {
+            if (isFinished) return; 
+            textElement.classList.remove('bounce-animation');
+            void textElement.offsetWidth; 
+
+            if (currentIndex < messages.length) {
+                textElement.innerText = messages[currentIndex];
+                textElement.classList.add('bounce-animation');
+                if (messages[currentIndex] === "Curious to know ?") {
+                    showButtons();
+                }
+                currentIndex++;
+            }
+        }
+
+        function showButtons() {
+            isFinished = true;
+            bodyElement.style.cursor = "default";
+            setTimeout(() => {
+                buttonContainer.style.display = "flex";
+                buttonContainer.classList.add('bounce-animation');
+            }, 300);
+        }
+
+        function handleNo(event) {
+            event.stopPropagation();
+            noClickCount++;
+            if (noClickCount === 1) {
+                noBtn.style.transform = "scale(0.7)";
+            } else if (noClickCount === 2) {
+                noBtn.style.transform = "scale(0.4)";
+                textElement.innerText = "Are you sure? 🥺";
+            } else if (noClickCount >= 3) {
+                noBtn.style.transform = "scale(0)";
+                noBtn.style.opacity = "0";
+                noBtn.style.pointerEvents = "none";
+                textElement.innerText = "Actually you should just click yes";
+                textElement.style.color = "#FFEB3B";
+            }
+        }
+
+       
+        function handleYes(event) {
+            event.stopPropagation();
+            window.location.href = "letter.html"; 
+        }
+    </script>
+</body>
+</html>
