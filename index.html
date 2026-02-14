@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Message for You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+    
     <style>
         body, html {
             margin: 0; padding: 0;
@@ -12,21 +15,45 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("bg.png"); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             background-color: #75caff;
             cursor: pointer;
             user-select: none;
             overflow: hidden;
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Caveat', cursive;
             flex-direction: column; 
+        }
+
+        /* GIF */
+        .gif-container {
+            width: 180px; 
+            height: 180px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
         }
 
         #display-text {
             color: white;
-            font-size: clamp(26px, 6vw, 30px);
+            font-size: clamp(32px, 8vw, 50px);
             text-align: center;
             margin-bottom: 30px;
             padding: 0 20px;
-            line-height: 1.3;
+            line-height: 1.1;
+            font-weight: 700;
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
         }
 
         .button-group {
@@ -36,22 +63,24 @@
         }
 
         .btn {
-            padding: 15px 40px;
-            font-size: 24px;
+            padding: 10px 40px;
+            font-size: 28px;
+            font-family: 'Caveat', cursive;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .btn-yes { background-color: #4CAF50; }
         .btn-no { background-color: #f44336; }
 
+        /* Animation */
         .bounce-animation {
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes popIn {
@@ -59,9 +88,12 @@
             100% { opacity: 1; transform: scale(1); }
         }
     </style>
-    
 </head>
 <body id="main-body" onclick="changeMessage()">
+
+    <div id="image-box" class="gif-container bounce-animation">
+        <img id="current-img" src="https://media.tenor.com/cDwcajb6iSsAAAAi/dizeno0022sticker.gif" alt="img">
+    </div>
 
     <div id="display-text" class="bounce-animation">HI!</div>
 
@@ -71,10 +103,28 @@
     </div>
 
     <script>
-        const messages = [
-            "If you see this",
-            "I've got something to tell you",
-            "Curious to know ?"
+        // เสียง
+        const clickSfx = new Audio('pop.mp3');
+        const btnSfx = new Audio('pop.mp3');  
+
+        function playSound(sound) {
+            sound.currentTime = 0; 
+            sound.play().catch(e => console.log("เสียงจะเล่นได้หลังจากการคลิกครั้งแรก"));
+        }
+
+        const content = [
+            {
+                text: "If you see this",
+                img: "https://media.tenor.com/f0iVpqQevsQAAAAi/silly-cat.gif"
+            },
+            {
+                text: "I've got something to tell you",
+                img: "https://media.tenor.com/eRGU5l2v-_wAAAAi/cat-meme.gif"
+            },
+            {
+                text: "Curious to know ?",
+                img: "https://media.tenor.com/gkOKYPloivMAAAAi/cat-eating-cereal.gif"
+            }
         ];
 
         let currentIndex = 0;
@@ -82,19 +132,31 @@
         let noClickCount = 0;
 
         const textElement = document.getElementById('display-text');
+        const imgElement = document.getElementById('current-img');
+        const imgBox = document.getElementById('image-box');
         const buttonContainer = document.getElementById('button-container');
         const bodyElement = document.getElementById('main-body');
         const noBtn = document.getElementById('no-btn');
 
         function changeMessage() {
             if (isFinished) return; 
-            textElement.classList.remove('bounce-animation');
-            void textElement.offsetWidth; 
 
-            if (currentIndex < messages.length) {
-                textElement.innerText = messages[currentIndex];
+            // เล่นเสียงคลิกหน้าจอ
+            playSound(clickSfx);
+
+            textElement.classList.remove('bounce-animation');
+            imgBox.classList.remove('bounce-animation');
+            void textElement.offsetWidth; 
+            void imgBox.offsetWidth; 
+
+            if (currentIndex < content.length) {
+                textElement.innerText = content[currentIndex].text;
+                imgElement.src = content[currentIndex].img;
+
                 textElement.classList.add('bounce-animation');
-                if (messages[currentIndex] === "Curious to know ?") {
+                imgBox.classList.add('bounce-animation');
+
+                if (content[currentIndex].text === "Curious to know ?") {
                     showButtons();
                 }
                 currentIndex++;
@@ -113,24 +175,43 @@
         function handleNo(event) {
             event.stopPropagation();
             noClickCount++;
+            
+            // เล่นเสียงปุ่ม
+            playSound(btnSfx);
+            
             if (noClickCount === 1) {
                 noBtn.style.transform = "scale(0.7)";
             } else if (noClickCount === 2) {
                 noBtn.style.transform = "scale(0.4)";
-                textElement.innerText = "Are you sure? 🥺";
+                textElement.innerText = "Hmmmmm";
+                imgElement.src = "https://media.tenor.com/nLtEykiFQ34AAAAj/kiryuureno-gatinho.gif";
             } else if (noClickCount >= 3) {
                 noBtn.style.transform = "scale(0)";
                 noBtn.style.opacity = "0";
                 noBtn.style.pointerEvents = "none";
                 textElement.innerText = "Actually you should just click yes";
                 textElement.style.color = "#FFEB3B";
+                imgElement.src = "https://media.tenor.com/9MlInP80F58AAAAi/cat-tongue-shake-cat-meme.gif";
+                
+              
+                textElement.classList.remove('bounce-animation');
+                imgBox.classList.remove('bounce-animation');
+                void textElement.offsetWidth;
+                textElement.classList.add('bounce-animation');
+                imgBox.classList.add('bounce-animation');
             }
         }
 
-       
         function handleYes(event) {
             event.stopPropagation();
-            window.location.href = "letter.html"; 
+            
+            // เล่นเสียงปุ่ม
+            playSound(btnSfx);
+
+           
+            setTimeout(() => {
+                window.location.href = "letter.html"; 
+            }, 400);
         }
     </script>
 </body>
