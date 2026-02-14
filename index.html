@@ -6,7 +6,7 @@
     <title>Message for You</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap" rel="stylesheet">
     
     <style>
         body, html {
@@ -24,8 +24,8 @@
             cursor: pointer;
             user-select: none;
             overflow: hidden;
-            /* อัปเดต font-family */
-            font-family: 'Permanent Marker', cursive;
+            /* อัปเดต font-family เป็น Playpen Sans */
+            font-family: 'Playpen Sans', cursive;
             flex-direction: column; 
         }
 
@@ -48,14 +48,13 @@
 
         #display-text {
             color: white;
-            font-size: clamp(32px, 8vw, 50px);
+            font-size: clamp(28px, 7vw, 45px); /* ปรับขนาดเล็กลงนิดนึงเพราะฟอนต์นี้ตัวค่อนข้างใหญ่ */
             text-align: center;
             margin-bottom: 30px;
             padding: 0 20px;
-            line-height: 1.2; /* ปรับ line-height เล็กน้อยให้เข้ากับฟอนต์ใหม่ */
-            font-weight: 400; /* Permanent Marker มีน้ำหนักเดียวคือ 400 (หนาอยู่แล้ว) */
+            line-height: 1.3;
+            font-weight: 700; /* ใช้ความหนาระดับ 700 เพื่อให้ใกล้เคียงรูปต้นฉบับ */
             text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
-            letter-spacing: 1px; /* เพิ่มระยะห่างตัวอักษรนิดหน่อยให้ดูเท่แบบในรูป */
         }
 
         .button-group {
@@ -67,8 +66,8 @@
         .btn {
             padding: 10px 40px;
             font-size: 24px;
-            /* อัปเดต font-family สำหรับปุ่ม */
-            font-family: 'Permanent Marker', cursive;
+            font-family: 'Playpen Sans', cursive;
+            font-weight: 800; /* ปุ่มใช้ความหนาสูงสุดเพื่อให้เด่น */
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -97,7 +96,7 @@
         <img id="current-img" src="https://media.tenor.com/cDwcajb6iSsAAAAi/dizeno0022sticker.gif" alt="img">
     </div>
 
-    <div id="display-text" class="bounce-animation">HI!</div>
+    <div id="display-text" class="bounce-animation">ดีจ้าา</div>
 
     <div id="button-container" class="button-group">
         <button id="yes-btn" class="btn btn-yes" onclick="handleYes(event)">YES</button>
@@ -105,19 +104,19 @@
     </div>
 
     <script>
-        // ... (Script เดิมทั้งหมดของคุณยังใช้งานได้ปกติ) ...
+        // ... (Script ส่วนเดิมทั้งหมด) ...
         const clickSfx = new Audio('pop.mp3');
         const btnSfx = new Audio('pop.mp3');  
 
         function playSound(sound) {
             sound.currentTime = 0; 
-            sound.play().catch(e => console.log("Sound error context"));
+            sound.play().catch(e => console.log("Sound play error"));
         }
 
         const content = [
-            { text: "If you see this", img: "https://media.tenor.com/f0iVpqQevsQAAAAi/silly-cat.gif" },
-            { text: "I've got something to tell you", img: "https://media.tenor.com/eRGU5l2v-_wAAAAi/cat-meme.gif" },
-            { text: "Curious to know ?", img: "https://media.tenor.com/gkOKYPloivMAAAAi/cat-eating-cereal.gif" }
+            { text: "ถ้าครีมกําลังอ่านอยู่", img: "https://media.tenor.com/f0iVpqQevsQAAAAi/silly-cat.gif" },
+            { text: "ไนม์มีไรจะบอก", img: "https://media.tenor.com/eRGU5l2v-_wAAAAi/cat-meme.gif" },
+            { text: "อยากรู้ป่าวว", img: "https://media.tenor.com/gkOKYPloivMAAAAi/cat-eating-cereal.gif" }
         ];
 
         let currentIndex = 0;
@@ -144,7 +143,7 @@
                 imgElement.src = content[currentIndex].img;
                 textElement.classList.add('bounce-animation');
                 imgBox.classList.add('bounce-animation');
-                if (content[currentIndex].text === "Curious to know ?") {
+                if (content[currentIndex].text === "อยากรู้ป่าวว" || content[currentIndex].text === "Curious to know ?") {
                     showButtons();
                 }
                 currentIndex++;
@@ -168,13 +167,13 @@
                 noBtn.style.transform = "scale(0.7)";
             } else if (noClickCount === 2) {
                 noBtn.style.transform = "scale(0.4)";
-                textElement.innerText = "Hmmmmm";
+                textElement.innerText = "ทําไรอ่ะกดNoทํามาย";
                 imgElement.src = "https://media.tenor.com/nLtEykiFQ34AAAAj/kiryuureno-gatinho.gif";
             } else if (noClickCount >= 3) {
                 noBtn.style.transform = "scale(0)";
                 noBtn.style.opacity = "0";
                 noBtn.style.pointerEvents = "none";
-                textElement.innerText = "Actually you should just click yes";
+                textElement.innerText = "ถึงยังไงก็ต้องกดYesอยู่ดีฮ่าๆๆ";
                 textElement.style.color = "#FFEB3B";
                 imgElement.src = "https://media.tenor.com/9MlInP80F58AAAAi/cat-tongue-shake-cat-meme.gif";
                 textElement.classList.remove('bounce-animation');
@@ -195,4 +194,3 @@
     </script>
 </body>
 </html>
-
