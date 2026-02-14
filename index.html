@@ -6,7 +6,7 @@
     <title>Message for You</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
     
     <style>
         body, html {
@@ -24,8 +24,8 @@
             cursor: pointer;
             user-select: none;
             overflow: hidden;
-            /* อัปเดต font-family เป็น Playpen Sans */
-            font-family: 'Playpen Sans', cursive;
+            /* อัปเดต font-family เป็น Itim */
+            font-family: 'Itim', cursive;
             flex-direction: column; 
         }
 
@@ -48,12 +48,13 @@
 
         #display-text {
             color: white;
-            font-size: clamp(28px, 7vw, 45px); /* ปรับขนาดเล็กลงนิดนึงเพราะฟอนต์นี้ตัวค่อนข้างใหญ่ */
+            /* ฟอนต์ Itim ตัวจะผอมกว่าเล็กน้อย เลยปรับขนาด font-size ขึ้นอีกนิดครับ */
+            font-size: clamp(30px, 8vw, 55px); 
             text-align: center;
             margin-bottom: 30px;
             padding: 0 20px;
-            line-height: 1.3;
-            font-weight: 700; /* ใช้ความหนาระดับ 700 เพื่อให้ใกล้เคียงรูปต้นฉบับ */
+            line-height: 1.2;
+            font-weight: 400; /* Itim มีน้ำหนักเดียวคือ 400 ซึ่งพอดีอยู่แล้ว */
             text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
         }
 
@@ -65,9 +66,8 @@
 
         .btn {
             padding: 10px 40px;
-            font-size: 24px;
-            font-family: 'Playpen Sans', cursive;
-            font-weight: 800; /* ปุ่มใช้ความหนาสูงสุดเพื่อให้เด่น */
+            font-size: 28px;
+            font-family: 'Itim', cursive;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -104,7 +104,6 @@
     </div>
 
     <script>
-        // ... (Script ส่วนเดิมทั้งหมด) ...
         const clickSfx = new Audio('pop.mp3');
         const btnSfx = new Audio('pop.mp3');  
 
@@ -143,7 +142,8 @@
                 imgElement.src = content[currentIndex].img;
                 textElement.classList.add('bounce-animation');
                 imgBox.classList.add('bounce-animation');
-                if (content[currentIndex].text === "อยากรู้ป่าวว" || content[currentIndex].text === "Curious to know ?") {
+                // แก้ไขเงื่อนไขให้ตรงกับตัวแปร content ภาษาไทย
+                if (content[currentIndex].text === "อยากรู้ป่าวว") {
                     showButtons();
                 }
                 currentIndex++;
@@ -194,3 +194,4 @@
     </script>
 </body>
 </html>
+
