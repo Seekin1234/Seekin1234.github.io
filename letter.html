@@ -1,243 +1,157 @@
 <!DOCTYPE html>
-
 <html lang="th">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title></title>
-
-
+  <title>The Secret</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
 
   <style>
-
     body {
-
       margin: 0;
-
       width: 100%;
-
       height: 100vh;
-
       display: flex;
-
       flex-direction: column;
-
       justify-content: center;
-
       align-items: center;
-
-      background: #f0f0f0;
-
-      font-family: sans-serif;
-
+      background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('bg.png'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: #75caff; 
+      font-family: 'Caveat', cursive;
       position: relative;
-
+      overflow: hidden;
     }
-
-
 
     .image-box {
-
       position: relative;
-
-      width: 350px;
-
-      height: 350px;
-
+      width: 320px;
+      height: 320px;
       cursor: pointer;
-
       overflow: hidden;
-
-      border-radius: 20px;
-
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-
+      border-radius: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      border: 5px solid white;
+      transition: transform 0.3s ease;
     }
-
-
+    
+    .image-box:hover {
+        transform: scale(1.02);
+    }
 
     .image-box img {
-
       width: 100%;
-
       height: 100%;
-
       object-fit: cover;
-
-      filter: blur(20px); 
-
-      transition: filter 1.5s ease;
-
+      filter: blur(30px);
+      transition: filter 2s ease;
     }
-
-
 
     .image-box.reveal img {
-
       filter: blur(0px);
-
     }
-
-
 
     .instruction {
-
       position: absolute;
-
       top: 50%;
-
       left: 50%;
-
       transform: translate(-50%, -50%);
-
       color: white;
-
-      background: rgba(0,0,0,0.5);
-
-      padding: 10px 20px;
-
+      background: rgba(0,0,0,0.4);
+      padding: 12px 25px;
       border-radius: 30px;
-
       pointer-events: none;
-
       transition: opacity 0.5s ease;
-
+      font-size: 24px;
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.3);
     }
-
-
 
     .image-box.reveal .instruction {
-
       opacity: 0;
-
     }
-
-
 
     #mystery-button {
-
       position: absolute;
-
-      bottom: 20px; 
-
+      bottom: 40px; 
       left: 50%;
-
       transform: translateX(-50%) scale(0);
-
-      
-
-      padding: 8px 20px;
-
-      font-size: 13px;  
-
-      color: rgba(0, 0, 0, 0.6); 
-
-      
-
-    
-
-      background: rgba(83, 81, 81, 0.829); 
-
-      backdrop-filter: blur(10px); 
-
-      -webkit-backdrop-filter: blur(10px); 
-
-      
-
-      border: 1px solid rgba(255, 255, 255, 0.3);
-
+      padding: 10px 30px;
+      font-size: 22px;
+      font-family: 'Caveat', cursive;
+      font-weight: bold;
+      color: white; 
+      background: rgba(255, 255, 255, 0.2); 
+      backdrop-filter: blur(15px); 
+      -webkit-backdrop-filter: blur(15px); 
+      border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 50px;
-
       cursor: pointer;
-
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
       opacity: 0;
-
       z-index: 10;
-
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
-
-
 
     #mystery-button.show {
-
       transform: translateX(-50%) scale(1);
-
       opacity: 1;
-
     }
-
-
 
     #mystery-button:hover {
-
-      transform: translateX(-50%) scale(1.05);
-
-      background: rgba(87, 161, 230, 0.932);
-
-      color: rgba(0, 0, 0, 0.8);
-
+      transform: translateX(-50%) scale(1.1);
+      background: #4CAF50;
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
     }
-
   </style>
-
 </head>
-
 <body>
 
-
-
   <div class="image-box" onclick="revealImage(this)">
-
     <img src="picop.png" alt="Secret Image">
-
-    <div class="instruction">กดเร็วๆ</div>
-
+    <div class="instruction">open</div>
   </div>
-
-
 
   <button id="mystery-button" onclick="mysteryAction()">???</button>
 
-
-
   <script>
+    
+    const openSfx = new Audio('paperr.mp3');
+    
+ 
+    const btnSfx = new Audio('pop.mp3');
 
     function revealImage(element) {
-
+      if (!element.classList.contains("reveal")) {
+       
+        openSfx.currentTime = 0;
+        openSfx.play();
+      }
       element.classList.add("reveal");
-
     }
-
-
 
     setTimeout(() => {
-
       const btn = document.getElementById('mystery-button');
-
       btn.classList.add('show');
-
     }, 3000);
 
-
-
     function mysteryAction() {
-
    
-
-      window.location.href = "page2.html";
-
+      btnSfx.currentTime = 0;
+      btnSfx.play();
+      
+      setTimeout(() => {
+        window.location.href = "page2.html";
+      }, 400); 
     }
-
   </script>
 
-
-
 </body>
-
 </html>
